@@ -23,3 +23,12 @@ func JSONFileToStruct(jsonFile string, out interface{}) error {
 
 	return json.Unmarshal(raw, &out)
 }
+
+// ByteArrayToString converts byte array into string
+func ByteArrayToString(bs []uint8) string {
+	b := make([]byte, len(bs))
+	for i, v := range bs {
+		b[i] = byte(v)
+	}
+	return string(b)
+}
