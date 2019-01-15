@@ -7,6 +7,14 @@ import (
 	"encoding/base64"
 	"fmt"
 	"io"
+	mathrand "math/rand"
+)
+
+const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-"
+const (
+	letterIdxBits = 6                    // 6 bits to represent a letter index
+	letterIdxMask = 1<<letterIdxBits - 1 // All 1-bits, as many as letterIdxBits
+	letterIdxMax  = 63 / letterIdxBits   // # of letter indices fitting in 63 bits
 )
 
 // EncryptString encrypts input string and returns a byte slice
@@ -66,4 +74,24 @@ func Gen32BitKey() ([]byte, error) {
 		return nil, err
 	}
 	return key, nil
+}
+
+// RandomString generates a random string with provided special characters
+func RandomString(n int, src mathrand.Source) string {
+	b := make([]byte, n)
+
+	// A src.Int63() generates 63 random bits, enough for letterIdxMax characters!
+	for i, cache, remain := n-1, src.Int63(), letterIdxMax; i >= 0; {
+		if remain == 0 {
+			cache, remain = src.Int63(), letterIdxMax
+		}
+		if idx := int(cache & letterIdxMask); idx < len(letterBytes) {
+			b[i] = letterBytes[idx]
+			i--
+		}
+		cache >>= letterIdxBits
+		remain--
+	}
+
+	return string(b)
 }
