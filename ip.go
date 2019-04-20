@@ -7,11 +7,22 @@ import (
 )
 
 func GetUserIpAddress(req *http.Request) (string, error) {
-	forwarded := req.Header.Get("X-FORWARDED-FOR")
-	ips := strings.Split(forwarded, ",")
-	if len(ips) > 0 {
-		return ips[0], nil
+	IPAddress := req.Header.Get("X-Real-Ip")
+	if IPAddress == "" {
+		forwarded := req.Header.Get("X-Forwarded-For")
+		ips := strings.Split(forwarded, ",")
+		if len(ips) > 0 {
+			IPAddress = ips[0]
+		}
 	}
 
-	return "", errors.New("ip address not found")
+	if IPAddress == "" {
+		IPAddress = req.RemoteAddr
+	}
+
+	if IPAddress == "" {
+		return "", errors.New("ip address not found")
+	}
+
+	return IPAddress, nil
 }
