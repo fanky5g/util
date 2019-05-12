@@ -65,8 +65,12 @@ func CheckMAC(message, messageMAC, key []byte) bool {
 
 // GetCurrentTimestamp formats current time in "2006-01-02 15:04:05 Z0700" layout
 func GetCurrentTimestamp() string {
-	t := time.Now()
-	return t.Format("2006-01-02 15:04:05 ZO700")
+	return GetCurrentTimestampWithLayout("2006-01-02 15:04:05 ZO700")
+}
+
+// GetCurrentTimestampWithLayout returns current timestamp with specified layout
+func GetCurrentTimestampWithLayout(layout string) string {
+	return time.Now().Format(layout)
 }
 
 // GetClient returns an http client for transactions
