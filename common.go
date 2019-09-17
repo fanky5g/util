@@ -73,34 +73,40 @@ func GetCurrentTimestampWithLayout(layout string) string {
 	return time.Now().Format(layout)
 }
 
-// GetClient returns an http client for transactions
-func GetClient() *http.Client {
-	createClient := func() *http.Client {
-		var t = &http.Transport{
-			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-			Proxy:           http.ProxyFromEnvironment,
-			Dial: (&net.Dialer{
-				// Timeout:   60 * time.Second,
-				// KeepAlive: 30 * time.Second,
-				Timeout:   0,
-				KeepAlive: 0,
-			}).Dial,
-			TLSHandshakeTimeout: 30 * time.Second,
-		}
-
-		var client = &http.Client{
-			Transport: t,
-		}
-
-		return client
+func createClient(cookieJar http.CookieJar) *http.Client {
+	var t = &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		Proxy:           http.ProxyFromEnvironment,
+		Dial: (&net.Dialer{
+			// Timeout:   60 * time.Second,
+			// KeepAlive: 30 * time.Second,
+			Timeout:   0,
+			KeepAlive: 0,
+		}).Dial,
+		TLSHandshakeTimeout: 30 * time.Second,
 	}
 
+	var client = &http.Client{
+		Transport: t,
+		Jar:       cookieJar,
+	}
+
+	return client
+}
+
+// GetClient returns an http client for transactions
+func GetClient() *http.Client {
 	if client == nil {
-		client = createClient()
+		client = createClient(nil)
 		return client
 	}
 
 	return client
+}
+
+// GetClientWithCookieJar creates a new http client passing along cookie jar
+func GetClientWithCookieJar(jar http.CookieJar) *http.Client {
+	return createClient(jar)
 }
 
 // GetProxyClient returns a socks5 proxy client

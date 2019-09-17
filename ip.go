@@ -6,7 +6,8 @@ import (
 	"strings"
 )
 
-func GetUserIpAddress(req *http.Request) (string, error) {
+// GetUserIPAddress gets ip address from request
+func GetUserIPAddress(req *http.Request) (string, error) {
 	IPAddress := req.Header.Get("X-Real-Ip")
 	if IPAddress == "" {
 		forwarded := req.Header.Get("X-Forwarded-For")

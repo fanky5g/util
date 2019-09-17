@@ -7,6 +7,7 @@ import (
 
 var table = [...]byte{'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'}
 
+// RandomNumberString gets a random integer string
 func RandomNumberString(size int) string {
 	b := make([]byte, size)
 	n, err := io.ReadAtLeast(rand.Reader, b, size)

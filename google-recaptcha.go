@@ -16,14 +16,14 @@ import (
 func CheckRecaptchaToken(clientIP, secret, responseToken string) (bool, error) {
 	client := GetClient()
 
-	apiUrl := "https://www.google.com"
+	apiURL := "https://www.google.com"
 	resource := "/recaptcha/api/siteverify"
 	data := url.Values{}
 	data.Set("secret", secret)
 	data.Set("response", responseToken)
 	data.Set("remoteip", clientIP)
 
-	u, _ := url.ParseRequestURI(apiUrl)
+	u, _ := url.ParseRequestURI(apiURL)
 	u.Path = resource
 	urlStr := u.String()
 
