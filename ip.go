@@ -10,6 +10,14 @@ import (
 func GetUserIPAddress(req *http.Request) (string, error) {
 	var IPAddress string
 
+	originalForwardedFor := req.Header.Get("X-Original-Forwarded-For")
+	if originalForwardedFor != "" {
+		ips := strings.Split(originalForwardedFor, ",")
+		if len(ips) > 0 {
+			IPAddress = ips[0]
+		}
+	}
+
 	forwarded := req.Header.Get("X-Forwarded-For")
 	if forwarded != "" {
 		ips := strings.Split(forwarded, ",")
