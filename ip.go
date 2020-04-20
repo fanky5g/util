@@ -8,13 +8,18 @@ import (
 
 // GetUserIPAddress gets ip address from request
 func GetUserIPAddress(req *http.Request) (string, error) {
-	IPAddress := req.Header.Get("X-Real-Ip")
-	if IPAddress == "" {
-		forwarded := req.Header.Get("X-Forwarded-For")
+	var IPAddress string
+
+	forwarded := req.Header.Get("X-Forwarded-For")
+	if forwarded != "" {
 		ips := strings.Split(forwarded, ",")
 		if len(ips) > 0 {
 			IPAddress = ips[0]
 		}
+	}
+
+	if IPAddress == "" {
+		IPAddress = req.Header.Get("X-Real-Ip")
 	}
 
 	if IPAddress == "" {
