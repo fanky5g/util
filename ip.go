@@ -18,11 +18,13 @@ func GetUserIPAddress(req *http.Request) (string, error) {
 		}
 	}
 
-	forwarded := req.Header.Get("X-Forwarded-For")
-	if forwarded != "" {
-		ips := strings.Split(forwarded, ",")
-		if len(ips) > 0 {
-			IPAddress = ips[0]
+	if IPAddress == "" {
+		forwarded := req.Header.Get("X-Forwarded-For")
+		if forwarded != "" {
+			ips := strings.Split(forwarded, ",")
+			if len(ips) > 0 {
+				IPAddress = ips[0]
+			}
 		}
 	}
 
