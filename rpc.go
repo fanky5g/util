@@ -13,12 +13,12 @@ const (
 	// MaxConcurrentRequests represents number of parallel requests we can run
 	MaxConcurrentRequests = 100
 	// ErrorPercentThreshold represents ...
-	ErrorPercentThreshold = 30
+	ErrorPercentThreshold = 1
 )
 
 var (
 	// Timeout value for when to drop connection if no response has been received
-	Timeout      = 5000
+	Timeout      = 30000
 	commandstore = make(map[string]interface{})
 )
 
