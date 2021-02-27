@@ -18,18 +18,11 @@ import (
 	"golang.org/x/net/proxy"
 
 	"github.com/fanky5g/logger"
-	"github.com/twinj/uuid"
 )
 
 var (
 	client *http.Client
 )
-
-// GenUniqueKey returns a uuid for efficient ids
-func GenUniqueKey() string {
-	u := uuid.NewV4()
-	return u.String()
-}
 
 // CreateHMACFromStruct creates sha256 hmac string from struct
 // @todo:ensure body is struct
