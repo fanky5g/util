@@ -82,6 +82,9 @@ func createClient(cookieJar http.CookieJar) *http.Client {
 	var client = &http.Client{
 		Transport: t,
 		Jar:       cookieJar,
+		CheckRedirect: func(req *http.Request, via []*http.Request) error {
+			return http.ErrUseLastResponse
+		},
 	}
 
 	return client
